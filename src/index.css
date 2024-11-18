@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 /* ... */
+html[dir='ltr'] {
+  text-align: left;
+}
+
+html[dir='rtl'] {
+  text-align: right;
+}
 body {
   background-color: rgb(243, 252, 255);
 }
@@ -116,4 +123,12 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.ltr {
+  direction: ltr;
 }

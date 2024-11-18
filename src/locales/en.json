@@ -1,0 +1,38 @@
+{
+  "form": {
+    "login_number": "Login Number",
+    "contact_email": "Contact Email",
+    "contact_number": "Contact Number",
+    "contact_name": "Contact Name",
+    "address": {
+      "billing_address": "Billing Address",
+      "billing_number": "Billing Number",
+      "postal_code": "Postal Code",
+      "country": "State",
+      "city": "City"
+    },
+    "monthly_sessions": "Monthly Sessions",
+    "payment": {
+      "payment_method": "Payment Method",
+      "card_number": "Card Number",
+      "card_holder": "Card Holder"
+    }
+  },
+  "order": {
+    "overview": "Order Overview",
+    "6m": "6 Month",
+    "9m": "9 Month",
+    "12m": "12 Month",
+    "18m": "18 Month",
+    "24m": "24 Month",
+    "36m": "36 Month",
+    "pay_advance": "Pay in advance 5%",
+    "monthly_session": "Monthly Sessions",
+    "regular_price": "Regular price",
+    "your_price": "Your Price",
+    "discount_amount": "Discount",
+    "setup_fee": "Setup fee",
+    "total_price": "Total Price",
+    "terms": "I understand Terms & Conditions and my Rights Of use Which lead to repeal."
+  }
+}

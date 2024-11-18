@@ -1,324 +1,311 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
+import { useFormContext } from 'react-hook-form';
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
 import { Input } from './input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 import { RadioGroup, RadioGroupItem } from './radio-group';
 import { Label } from './label';
-import { EyeClosedIcon } from 'lucide-react';
+import { COUNTRIES_OPTIONS, PAYMENT_OPTIONS, SESSION_OPTIONS } from '@/utils/constants';
+import { useTranslation } from 'react-i18next';
+import { useChangeLanguage } from '@/context/Language';
 
-import OrderSummary from './OrderSummary';
-import { z } from 'zod';
-import formSchema from '@/schemas/FormSchemas';
-import formDefaults from '@/schemas/FormDefaults';
-
-const RegistrationBookingFrom = ({ dir }: { dir: 'ltr' | 'rtl' }) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: formDefaults,
-  });
-  console.log(form.getValues());
-  const onSubmit = async (data: any) => {
-    console.log(data);
-    console.log(form.getValues());
-  };
+const RegistrationBookingFrom = () => {
+  const { control, getValues } = useFormContext();
+  const { t } = useTranslation();
+  const { direction } = useChangeLanguage();
   return (
-    <Form {...form}>
-      <form
-        className='flex flex-col md:flex-row'
-        onSubmit={form.handleSubmit(onSubmit)}
-        dir={dir}>
-        <div className='flex-1 bg-white p-5'>
-          <div className='text-center mb-5'>
-            <h2 className='text-2xl font-bold text-black'>Registration & Booking at GoStudent</h2>
-            <p className='text-muted-foreground text-md mt-1 font-light'>The leading platform for online tutoring.</p>
-          </div>
+    <div className='flex-1 bg-white p-5'>
+      <div className='text-center mb-5'>
+        <h2 className='text-2xl font-bold text-black'>{t('form.heading')}</h2>
+        <p className='text-muted-foreground text-md mt-1 font-light'>{t('form.subHeading')}</p>
+      </div>
+      <div
+        className={`space-y-3 ${direction === 'ltr' ? 'text-left' : 'text-right'}`}
+        dir={direction}>
+        <FormField
+          control={control}
+          name='login_number'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>
+                {t('form.login_number')} <span className='text-black normal-case'> (preferable the student's)</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type='text'
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={control}
+          name='contact_number'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>
+                {t('form.contact_number')} <span className='text-black normal-case'> (preferable the student's)</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className='m-0 outline-none'
+                  type='text'
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name='contact_email'
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>
+                {t('form.contact_email')} <span className='text-black normal-case'> (preferable the student's)</span>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  className='m-0 outline-none'
+                  type='text'
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          name='contact_name'
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.contact_name')}</FormLabel>
+              <FormControl>
+                <Input
+                  className='m-0 outline-none'
+                  type='text'
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className='flex items-center gap-4'>
           <FormField
-            control={form.control}
-            name='login_number'
+            name='billing_address.address'
+            control={control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>
-                  Login Phone Number <span className='text-black normal-case'> (preferable the student's)</span>
-                </FormLabel>
+                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.address.billing_address')}</FormLabel>
                 <FormControl>
                   <Input
                     className='m-0 outline-none'
+                    placeholder='Address'
                     type='text'
                     {...field}
                   />
                 </FormControl>
+
                 <FormDescription />
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
-            control={form.control}
-            name='contact_number'
+            name='billing_address.nr'
+            control={control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>
-                  Contact Phone Number <span className='text-black normal-case'> (preferable the student's)</span>
-                </FormLabel>
+                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.address.billing_number')}</FormLabel>
                 <FormControl>
                   <Input
                     className='m-0 outline-none'
+                    placeholder='Nr'
                     type='text'
                     {...field}
                   />
                 </FormControl>
+
                 <FormDescription />
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
-            control={form.control}
-            name='contact_email'
+            name='billing_address.postalCode'
+            control={control}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>
-                  Contact email address <span className='text-black normal-case'> (preferable the student's)</span>
-                </FormLabel>
+                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.address.postal_code')}</FormLabel>
                 <FormControl>
                   <Input
                     className='m-0 outline-none'
+                    placeholder='Postal Code'
                     type='text'
                     {...field}
                   />
                 </FormControl>
+
                 <FormDescription />
                 <FormMessage />
               </FormItem>
             )}
           />
+        </div>
+        <div className='flex items-center gap-4'>
           <FormField
-            control={form.control}
-            name='contact_name'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>Contact name</FormLabel>
-                <FormControl>
-                  <Input
-                    className='m-0 outline-none'
-                    type='text'
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription />
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div>
-            <div className='flex gap-3'>
-              <FormField
-                control={form.control}
-                name='billing_address.address'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>billing address</FormLabel>
-                    <FormControl>
-                      <Input
-                        className='m-0 outline-none'
-                        placeholder='Address'
-                        type='text'
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='billing_address.nr'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>billing number</FormLabel>
-                    <FormControl>
-                      <Input
-                        className='m-0 outline-none'
-                        placeholder='Nr'
-                        type='text'
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className='flex gap-3'>
-              <FormField
-                control={form.control}
-                name='billing_address.postalCode'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormControl>
-                      <Input
-                        className='m-0 outline-none'
-                        placeholder='Postal Code'
-                        type='text'
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='billing_address.city'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormControl>
-                      <Input
-                        className='m-0 outline-none'
-                        placeholder='City'
-                        type='text'
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='billing_address.country'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Country' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='cairo'>Cairo</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
-          <FormField
-            control={form.control}
-            name='monthly_sessions'
+            name='billing_address.city'
+            control={control}
             render={({ field }) => (
               <FormItem className='flex-1'>
+                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.address.city')}</FormLabel>
+                <FormControl>
+                  <Input
+                    className='m-0 outline-none'
+                    placeholder='City'
+                    type='text'
+                    {...field}
+                  />
+                </FormControl>
+
+                <FormDescription />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            name='billing_address.country'
+            control={control}
+            render={({ field }) => (
+              <FormItem className='flex-1'>
+                <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase p-0'>{t('form.address.country')}</FormLabel>
                 <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  defaultValue={String(field.value)}>
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder='Monthly Sessions' />
+                      <SelectValue placeholder='Country' />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value='8'>8</SelectItem>
-                    <SelectItem value='14'>14</SelectItem>
+                    {COUNTRIES_OPTIONS.map((country: string) => (
+                      <SelectItem
+                        value={country}
+                        key={country}>
+                        {country.toUpperCase()}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
+                <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name='payment.method'
-            render={({ field }) => (
-              <FormItem>
-                <RadioGroup
-                  defaultValue={field.value}
-                  onValueChange={field.onChange}>
-                  <div className='flex items-center space-x-2'>
-                    <RadioGroupItem
-                      value='visa'
-                      id='option-one'
-                    />
-                    <Label htmlFor='option-one'>
-                      <img
-                        src='/visa.png'
-                        width={60}
-                      />
-                    </Label>
-                  </div>
-                  <div className='flex items-center space-x-2'>
-                    <RadioGroupItem
-                      value='else'
-                      id='option-two'
-                    />
-                    <Label htmlFor='option-two'>
-                      <EyeClosedIcon />
-                    </Label>
-                  </div>
-                </RadioGroup>
-              </FormItem>
-            )}
-          />
-
-          {form.getValues().payment.method === 'visa' ? (
-            <div>
-              <FormField
-                control={form.control}
-                name='payment.cardHolder'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormControl>
-                      <Input
-                        className='m-0 outline-none'
-                        placeholder='Card Holder'
-                        type='text'
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name='payment.cardNumber'
-                render={({ field }) => (
-                  <FormItem className='flex-1'>
-                    <FormControl>
-                      <Input
-                        className='m-0 outline-none'
-                        placeholder='Card Number'
-                        {...field}
-                      />
-                    </FormControl>
-
-                    <FormDescription />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          ) : null}
         </div>
-
-        <OrderSummary
-          form={form}
-          dir={dir}
+        <FormField
+          name='monthly_sessions'
+          control={control}
+          render={({ field }) => (
+            <FormItem className='flex-1'>
+              <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.monthly_sessions')}</FormLabel>
+              <Select
+                onValueChange={(value) => field.onChange(Number(value))}
+                defaultValue={String(field.value)}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder='Monthly Sessions' />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {SESSION_OPTIONS.map((option: number, index: number) => (
+                    <SelectItem
+                      value={String(option)}
+                      key={index}>
+                      {option}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </form>
-    </Form>
+        <FormField
+          name='payment.method'
+          control={control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.payment.payment_method')}</FormLabel>
+              <RadioGroup
+                defaultValue={field.value}
+                onValueChange={field.onChange}>
+                {PAYMENT_OPTIONS.map((option: string, index: number) => (
+                  <div
+                    className={`flex items-center space-x-2 ${direction === 'en' ? 'justify-end' : 'justify-start'}`}
+                    key={index}>
+                    <RadioGroupItem
+                      value={option}
+                      id={option}
+                    />
+                    <Label htmlFor={option}>{option}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </FormItem>
+          )}
+        />
+        {getValues().payment.method === 'visa' ? (
+          <div>
+            <FormField
+              control={control}
+              name='payment.cardHolder'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.payment.card_holder')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      className='m-0 outline-none'
+                      placeholder='Card Holder'
+                      type='text'
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name='payment.cardNumber'
+              render={({ field }) => (
+                <FormItem className='flex-1'>
+                  <FormLabel className='m-0 text-xs text-muted-foreground font-bold uppercase'>{t('form.payment.card_number')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      className='m-0 outline-none'
+                      placeholder='Card Number'
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        ) : null}
+      </div>
+    </div>
   );
 };
 

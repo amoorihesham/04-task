@@ -1,10 +1,9 @@
-import RegistrationBookingFrom from '@/components/ui/RegistrationBookingFrom';
-import { useState } from 'react';
+import FormContainer from '@/components/ui/FormContainer';
+
 const OrderPage = () => {
-  const [dir, setDir] = useState<'ltr' | 'rtl'>('ltr');
   return (
     <div className=' px-20 py-10 flex justify-center'>
-      <RegistrationBookingFrom dir={dir} />
+      <FormContainer />
     </div>
   );
 };
